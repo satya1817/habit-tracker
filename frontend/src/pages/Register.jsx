@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { registerUser } from "../services/authService";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -14,11 +15,20 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log(formData);
-  };
+  try {
+    const response = await registerUser(formData);
+
+    console.log(response);
+
+    alert("Registration Successful");
+  } catch (error) {
+    console.log(error);
+    alert("Registration Failed");
+  }
+};
 
   return (
     <div>
