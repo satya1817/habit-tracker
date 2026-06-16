@@ -9,7 +9,16 @@ import {
 function Dashboard() {
   const [title, setTitle] = useState("");
   const [habits, setHabits] = useState([]);
+const totalHabits = habits.length;
 
+const completedToday = habits.filter(
+  (habit) => habit.streak > 0
+).length;
+
+const longestStreak =
+  habits.length > 0
+    ? Math.max(...habits.map((h) => h.streak))
+    : 0;
   const fetchHabits = async () => {
     try {
       const data = await getHabits();
@@ -55,6 +64,11 @@ const handleComplete = async (id) => {
     console.log(error);
   }
 };
+const handleLogout = () => {
+  localStorage.removeItem("token");
+
+  window.location.href = "/";
+};
 
   return (
     <div>
@@ -72,7 +86,17 @@ const handleComplete = async (id) => {
           Add Habit
         </button>
       </form>
+<div>
+  <h3>Total Habits: {totalHabits}</h3>
 
+  <h3>
+    Completed Today: {completedToday}
+  </h3>
+
+  <h3>
+    Longest Streak: {longestStreak}
+  </h3>
+</div>
       {habits.map((habit) => (
   <div key={habit._id}>
     <h3>{habit.title}</h3>
@@ -92,6 +116,9 @@ const handleComplete = async (id) => {
     </button>
   </div>
 ))}
+<button onClick={handleLogout}>
+  Logout
+</button>
     </div>
   );
 }
