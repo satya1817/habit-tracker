@@ -26,6 +26,17 @@ export const getHabits = async () => {
       Authorization: `Bearer ${getToken()}`,
     },
   });
+export const deleteHabit = async (id) => {
+  const response = await axios.delete(
+    `${API_URL}/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    }
+  );
 
+  return response.data;
+};
   return response.data;
 };

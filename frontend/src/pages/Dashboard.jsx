@@ -1,13 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  createHabit,
+  getHabits,
+  deleteHabit,
+} from "../services/habitService";
 
 function Dashboard() {
   const [title, setTitle] = useState("");
+  const [habits, setHabits] = useState([]);
 
-  const handleSubmit = (e) => {
+  const fetchHabits = async () => {
+    try {
+      const data = await getHabits();
+      setHabits(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchHabits();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(title);
+    try {
+      await createHabit({ title });
+
+      setTitle("");
+
+      fetchHabits();
+    } catch (error) {
+      console.log(error);
+      alert("Failed to add habit");
+    }
   };
+  const handleDelete = async (id) => {
+  try {
+    await deleteHabit(id);
+
+    fetchHabits();
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <div>
@@ -25,6 +62,18 @@ function Dashboard() {
           Add Habit
         </button>
       </form>
+
+      {habits.map((habit) => (
+  <div key={habit._id}>
+    <h3>{habit.title}</h3>
+
+    <button
+      onClick={() => handleDelete(habit._id)}
+    >
+      Delete
+    </button>
+  </div>
+))}
     </div>
   );
 }
