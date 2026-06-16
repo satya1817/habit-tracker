@@ -1,17 +1,34 @@
 import { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authService";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log({
+  try {
+    const response = await loginUser({
       email,
       password,
     });
-  };
+
+    localStorage.setItem(
+      "token",
+      response.token
+    );
+
+    alert("Login Successful");
+
+    navigate("/dashboard");
+  } catch (error) {
+    console.log(error);
+    alert("Invalid Credentials");
+  }
+};
 
   return (
     <div>
