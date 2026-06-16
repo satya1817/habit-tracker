@@ -3,6 +3,7 @@ import {
   createHabit,
   getHabits,
   deleteHabit,
+  completeHabit,
 } from "../services/habitService";
 
 function Dashboard() {
@@ -45,6 +46,15 @@ function Dashboard() {
     console.log(error);
   }
 };
+const handleComplete = async (id) => {
+  try {
+    await completeHabit(id);
+
+    fetchHabits();
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <div>
@@ -66,6 +76,14 @@ function Dashboard() {
       {habits.map((habit) => (
   <div key={habit._id}>
     <h3>{habit.title}</h3>
+
+    <p>Streak: {habit.streak}</p>
+
+    <button
+      onClick={() => handleComplete(habit._id)}
+    >
+      Complete
+    </button>
 
     <button
       onClick={() => handleDelete(habit._id)}
