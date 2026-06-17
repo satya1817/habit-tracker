@@ -69,7 +69,12 @@ const handleLogout = () => {
 
   window.location.href = "/";
 };
-
+const completionRate =
+  totalHabits > 0
+    ? Math.round(
+        (completedToday / totalHabits) * 100
+      )
+    : 0;
   return (
     <div>
       <h1>Dashboard</h1>
@@ -96,6 +101,9 @@ const handleLogout = () => {
   <h3>
     Longest Streak: {longestStreak}
   </h3>
+  <h3>
+  Completion Rate: {completionRate}%
+</h3>
 </div>
       {habits.map((habit) => (
   <div key={habit._id}>

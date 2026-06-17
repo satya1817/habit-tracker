@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { registerUser } from "../services/authService";
 
 function Register() {
@@ -7,7 +7,13 @@ function Register() {
     email: "",
     password: "",
   });
+useEffect(() => {
+  const token = localStorage.getItem("token");
 
+  if (token) {
+    navigate("/dashboard");
+  }
+}, []);
   const handleChange = (e) => {
     setFormData({
       ...formData,

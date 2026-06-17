@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 
@@ -28,7 +28,13 @@ const navigate = useNavigate();
     alert("Invalid Credentials");
   }
 };
+useEffect(() => {
+  const token = localStorage.getItem("token");
 
+  if (token) {
+    navigate("/dashboard");
+  }
+}, []);
   return (
     <div>
       <h1>Login</h1>
